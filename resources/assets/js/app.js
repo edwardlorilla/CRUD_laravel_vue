@@ -21,6 +21,7 @@ import EditUser from  './components/EditUser.vue';
 import ViewUser from  './components/ViewUser.vue';
 import Login from './components/Auth/Login.vue';
 import NotFound from './components/NotFound.vue';
+import UserTest from './components/UserTest.vue';
 import VeeValidate from 'vee-validate';
 import Auth from './components/packages/auth/Auth.js'
 Vue.use(VueRouter);
@@ -29,17 +30,20 @@ Vue.use(Auth);
 Vue.http.headers.common['X-CSRF-TOKEN'] = Laravel.csrfToken;
 Vue.http.headers.common['Authorization'] = 'Bearer ' + Vue.auth.getToken()
 
+
+
+
 const router = new VueRouter({
     hashbang: false,
     base: __dirname,
-    linkActiveClass: 'active',
     routes:[
-        {path:'/', component: Users, name:'users', meta:{forAuth:true}},
+        {path:'/', component: Users , name:'users', meta:{forAuth:true}},
         {path:'/create', component: CreateUser, name:'create'},
         {path: '/user/:id/edit', component: EditUser  },
         {path: '/user/:id', component: ViewUser  },
         {path: '/login', component: Login, name:'login', meta:{forVisitors:true}},
-        {path: '*', component: NotFound  },
+        {path: '*',     component: NotFound  },
+
     ]
 });
 
