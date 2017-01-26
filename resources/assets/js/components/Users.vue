@@ -10,24 +10,16 @@
             <tr>
                 <th></th>
                 <th></th>
-                <th v-for="key in grid"
-
-                    @click="sortBy(key)"
-                    :class="{ active: sortKey == key }">
-                    {{ key | capitalize }}
-                    <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
-                           </span>
-                </th>
-                <th></th>
+                <th>Username</th>
+                <th>Email</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="user in filteredData">
+            <tr v-for="user in users">
                 <td><input type="checkbox" @click="user.completed = !user.completed" :value = "user.id" v-model = "checkedNames"></td>
                 <td> <img :src="user.photo ? user.photo.file : '/images/default-profile.png' " /></td>
-                <td>{{user.name  }}</td>
-                <td>{{user.email}}</td>
+                <td v-for="key in grid">{{ user[key] }}</td>
                 <td><router-link class="btn btn-default" v-bind:to="'/user/' + user.id" >View</router-link></td>
                 <td><router-link class="btn btn-info" v-bind:to="'/user/' + user.id + '/edit'" >Edit</router-link></td>
 
@@ -36,11 +28,7 @@
         </table>
     </div>
 </template>
-<style>
-    .highlight {
-    background-color: yellow;
-    }
-</style>
+
 <script>
     import Alert from './Alert.vue';
     export default{
@@ -150,12 +138,6 @@
         capitalize: function (str) {
                 return str.charAt(0).toUpperCase() + str.slice(1)
         },
-        highlight: function(words, query){
-            var iQuery = new RegExp(query, "ig");
-            return words.toString().replace(iQuery, function(matchedTxt,a,b){
-                return ('<span class=\'highlight\'>' + matchedTxt + '</span>');
-            });
-        }
 
         },
         components:{
