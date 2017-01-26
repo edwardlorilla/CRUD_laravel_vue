@@ -1,8 +1,8 @@
 <template>
     <div>
-        <form id="search">
-             <input class="input form-control" placeholder="Search" name="query" v-model="filterKey">
-        </form>
+       <form id="search">
+           <input class="input form-control" placeholder="Search" name="query" v-model="filterKey">
+       </form>
          <Alert v-if="alert" v-bind:message="alert" />
         <button v-if="users.length > 0" class="btn btn-danger" @click="destroySubmit">Destroy</button>
         <table class="table table-striped">
@@ -10,13 +10,18 @@
             <tr>
                 <th></th>
                 <th></th>
-                <th>Username</th>
-                <th>Email</th>
+                <th v-for="key in grid"
+                    @click="sortBy(key)"
+                    :class="{ active: sortKey == key }">
+                {{ key | capitalize }}
+                <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+                </span>
+                </th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="user in users">
+            <tr v-for="user in filteredData">
                 <td><input type="checkbox" @click="user.completed = !user.completed" :value = "user.id" v-model = "checkedNames"></td>
                 <td> <img :src="user.photo ? user.photo.file : '/images/default-profile.png' " /></td>
                 <td v-for="key in grid">{{ user[key] }}</td>
@@ -36,7 +41,7 @@
             var grid = ['name','email']
             var sortOrders = {}
             grid.forEach(function (key) {
-                sortOrders[key] = 1
+            sortOrders[key] = 1
             })
             return{
                 filterKey : '',
@@ -65,32 +70,36 @@
         },
         computed: {
             filteredData: function () {
-                var sortKey = this.sortKey
-                var filterKey = this.filterKey && this.filterKey.toLowerCase()
-                var order = this.sortOrders[sortKey] || 1
-                var data = this.users
-                if (filterKey) {
-                    data = data.filter(function (row) {
-                        return Object.keys(row).some(function (key) {
-                            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
-                        })
+            var sortKey = this.sortKey
+            var filterKey = this.filterKey && this.filterKey.toLowerCase()
+            var order = this.sortOrders[sortKey] || 1
+            var data = this.users
+            if (filterKey) {
+            data = data.filter(function (row) {
+                return Object.keys(row).some(function (key) {
+                return String(row[key]).toLowerCase().indexOf(filterKey) > -1
                     })
-                }
-                if (sortKey) {
+                })
+            }
+            if (sortKey) {
                 data = data.slice().sort(function (a, b) {
-                a = a[sortKey]
-                b = b[sortKey]
+                    a = a[sortKey]
+                    b = b[sortKey]
                     return (a === b ? 0 : a > b ? 1 : -1) * order
-                    })
-                    }
-                    return data
-                },
-
+                })
+            }
+            return data
+            },
             finished: function() {
                 return this.user.filter(this.filters.completed);
             },
             pending: function() {
                 return this.user.filter(this.filters.notDone);
+            }
+        },
+        filters: {
+            capitalize: function (str) {
+                return str.charAt(0).toUpperCase() + str.slice(1)
             }
         },
         created(){
@@ -112,38 +121,14 @@
                 // error callbackp
                 });
             },
-            onInput(value) {
-                this.highlightedPosition = 0
-                this.isOpen = !!value
-            },
-            moveDown() {
-                if (!this.isOpen) {
-                return
-            }
-                this.highlightedPosition =(this.highlightedPosition + 1) % this.fOptions.length
-            },
-            moveUp() {
-            if (!this.isOpen) {
-                return
-            }
-                this.highlightedPosition = this.highlightedPosition - 1 < 0 ? this.fOptions.length - 1 : this.highlightedPosition - 1
-            },
-
             sortBy: function (key) {
                 this.sortKey = key
                 this.sortOrders[key] = this.sortOrders[key] * -1
             }
         },
-        filters: {
-        capitalize: function (str) {
-                return str.charAt(0).toUpperCase() + str.slice(1)
-        },
-
-        },
         components:{
-        Alert
+            Alert
         }
-
     }
 
 </script>
