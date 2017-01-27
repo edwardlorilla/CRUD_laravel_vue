@@ -6,7 +6,7 @@
         <Alert v-if="alert" v-bind:message="alert" />
         <button v-if="users.length > 0" class="btn btn-danger" @click="destroySubmit">Destroy</button>
         <table class="table table-striped">
-            <caption><h1>Users ({{computeUsers}})</h1></caption>
+            <caption><h1>Users({{computeUsers}})</h1></caption>
             <thead>
             <tr>
                 <th></th>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import Underscore from 'underscore/underscore.js';
+    import Underscore from 'underscore/underscore.js';
     import Alert from './Alert.vue';
     export default{
         data(){
@@ -73,7 +73,7 @@ import Underscore from 'underscore/underscore.js';
         },
         computed: {
             computeUsers(){
-               return  _.size(this.users)
+                return  _.size(this.users)
             },
             filteredData: function () {
             var sortKey = this.sortKey
