@@ -21,6 +21,7 @@ import EditUser from  './components/EditUser.vue';
 import ViewUser from  './components/ViewUser.vue';
 import Login from './components/Auth/Login.vue';
 import NotFound from './components/NotFound.vue';
+import Student from './components/StudentTest/Student.vue';
 import UserTest from './components/UserTest.vue';
 import VeeValidate from 'vee-validate';
 import Auth from './components/packages/auth/Auth.js'
@@ -39,6 +40,7 @@ const router = new VueRouter({
     routes:[
         {path:'/', component: Users , name:'users', meta:{forAuth:true}},
         {path:'/create', component: CreateUser, name:'create'},
+        {path:'/students', component: Student, name:'students'},
         {path: '/user/:id/edit', component: EditUser  },
         {path: '/user/:id', component: ViewUser  },
         {path: '/login', component: Login, name:'login', meta:{forVisitors:true}},

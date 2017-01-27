@@ -3,9 +3,10 @@
        <form id="search">
            <input class="input form-control" placeholder="Search" name="query" v-model="filterKey">
        </form>
-         <Alert v-if="alert" v-bind:message="alert" />
+        <Alert v-if="alert" v-bind:message="alert" />
         <button v-if="users.length > 0" class="btn btn-danger" @click="destroySubmit">Destroy</button>
         <table class="table table-striped">
+            <caption><h1>Users ({{computeUsers}})</h1></caption>
             <thead>
             <tr>
                 <th></th>
@@ -31,10 +32,12 @@
             </tr>
             </tbody>
         </table>
+
     </div>
 </template>
 
 <script>
+import Underscore from 'underscore/underscore.js';
     import Alert from './Alert.vue';
     export default{
         data(){
@@ -69,6 +72,9 @@
             }
         },
         computed: {
+            computeUsers(){
+               return  _.size(this.users)
+            },
             filteredData: function () {
             var sortKey = this.sortKey
             var filterKey = this.filterKey && this.filterKey.toLowerCase()
