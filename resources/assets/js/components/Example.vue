@@ -14,10 +14,9 @@
                 </div>
             </nav>
         <div class="container">
-
-            <transition name="fade">
-                <router-view></router-view>
-            </transition>
+               <transition name="fade">
+                   <router-view></router-view>
+               </transition>
             </div>
         </div>
     </template>

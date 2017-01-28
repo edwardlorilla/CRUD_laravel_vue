@@ -1,11 +1,11 @@
 <template>
     <div>
-       <form id="search">
+       <form v-if="users.length > 0" id="search">
            <input class="input form-control" placeholder="Search" name="query" v-model="filterKey">
        </form>
         <Alert v-if="alert" v-bind:message="alert" />
         <button v-if="users.length > 0" class="btn btn-danger" @click="destroySubmit">Destroy</button>
-        <table class="table table-striped">
+        <table v-if="users.length > 0"  class="table table-striped">
             <caption  v-if="users.length > 0" ><h1>Users({{computeUsers}})</h1></caption>
             <thead>
             <tr>
