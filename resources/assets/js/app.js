@@ -35,7 +35,8 @@ Vue.http.headers.common['Authorization'] = 'Bearer ' + Vue.auth.getToken()
 
 
 const router = new VueRouter({
-    hashbang: false,
+    mode:'history',
+
     base: __dirname,
     routes:[
         {path:'/', component: Users , name:'users', meta:{forAuth:true}},
@@ -44,8 +45,7 @@ const router = new VueRouter({
         {path: '/user/:id/edit', component: EditUser  },
         {path: '/user/:id', component: ViewUser  },
         {path: '/login', component: Login, name:'login', meta:{forVisitors:true}},
-        {path: '*',     component: NotFound  },
-
+        {path: '*', redirect: '/' }
     ]
 });
 
