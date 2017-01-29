@@ -18,6 +18,8 @@
                 <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
                 </span>
                 </th>
+                <th>Role</th>
+                <th></th>
                 <th></th>
             </tr>
             </thead>
@@ -26,6 +28,7 @@
                 <td><input type="checkbox" @click="user.completed = !user.completed" :value = "user.id" v-model = "checkedNames"></td>
                 <td> <img :src="user.photo ? user.photo.file : '/images/default-profile.png' " /></td>
                 <td v-for="key in grid">{{ user[key] }}</td>
+                <th>{{user.role ? user.role.name : 'No Role'}}</th>
                 <td><router-link class="btn btn-default" v-bind:to="'/user/' + user.id" >View</router-link></td>
                 <td><router-link class="btn btn-info" v-bind:to="'/user/' + user.id + '/edit'" >Edit</router-link></td>
 
