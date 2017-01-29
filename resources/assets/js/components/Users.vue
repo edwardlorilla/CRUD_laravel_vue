@@ -26,7 +26,10 @@
             <tbody>
             <tr v-for="user in filteredData">
                 <td><input type="checkbox" @click="user.completed = !user.completed" :value = "user.id" v-model = "checkedNames"></td>
-                <td> <img :src="user.photo ? user.photo.file : '/images/default-profile.png' " /></td>
+                <td>
+                    <img v-if="user.photo"  :src="user.photo ? user.photo.file : '' " />
+                    <avatar v-else  username="Jane Doe"></avatar>
+                </td>
                 <td v-for="key in grid">{{ user[key] }}</td>
                 <th>{{user.role ? user.role.name : 'No Role'}}</th>
                 <td><router-link class="btn btn-default" v-bind:to="'/user/' + user.id" >View</router-link></td>
@@ -42,6 +45,7 @@
 <script>
     import Underscore from 'underscore/underscore.js';
     import Alert from './Alert.vue';
+    import Avatar from 'vue-avatar/dist/Avatar.vue'
     export default{
         data(){
             var grid = ['name','email']
@@ -136,7 +140,7 @@
             }
         },
         components:{
-            Alert,
+            Alert,Avatar
         }
     }
 
