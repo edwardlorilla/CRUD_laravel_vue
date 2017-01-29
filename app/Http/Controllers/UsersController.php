@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUser;
 use App\Photo;
 use App\User;
 use Illuminate\Http\Request;
@@ -65,7 +66,10 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        return User::findOrfail($id);
+        $users = User::findOrfail($id);
+        return response()->json([
+            'users' => $users
+        ]);
     }
 
     /**
@@ -76,7 +80,6 @@ class UsersController extends Controller
      */
     public function edit(Request $request, $id)
     {
-
 
     }
 
@@ -94,7 +97,9 @@ class UsersController extends Controller
 
     public function edits(Request $request, $id)
     {
+
         $user = User::findOrFail($id);
+
         if (trim($request->password) == '') {
             $input = $request->except('password');
         } else {

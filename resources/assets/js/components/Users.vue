@@ -27,8 +27,8 @@
             <tr v-for="user in filteredData">
                 <td><input type="checkbox" @click="user.completed = !user.completed" :value = "user.id" v-model = "checkedNames"></td>
                 <td>
-                    <img v-if="user.photo"  :src="user.photo ? user.photo.file : '' " />
-                    <avatar v-else  username="Jane Doe"></avatar>
+                    <img v-if="user.photo"   :src="user.photo ? user.photo.file : '' " />
+                    <avatar v-else  :username="user.name"></avatar>
                 </td>
                 <td v-for="key in grid">{{ user[key] }}</td>
                 <th>{{user.role ? user.role.name : 'No Role'}}</th>
@@ -45,7 +45,7 @@
 <script>
     import Underscore from 'underscore/underscore.js';
     import Alert from './Alert.vue';
-    import Avatar from 'vue-avatar/dist/Avatar.vue'
+    import Avatar from 'vue-avatar/dist/Avatar.vue';
     export default{
         data(){
             var grid = ['name','email']

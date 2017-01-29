@@ -23,18 +23,19 @@
     export default{
     data(){
     return{
-    list:''
+    list:'',
+    baseUrl: '/'
     }
     },
     methods:{
     fetchTask: function(id)
     {
-    this.$http.get('api/users/'+ id).then(function (response) {
-    this.list = response.data
+    this.$http.get(this.baseUrl + 'api/users/'+ id).then(function (response) {
+    this.list = response.data.users
     });
     },
     deleteUser: function(id){
-    this.$http.post('api/user/destroy', {id :[id] }).then(function (response) {
+    this.$http.post(this.baseUrl +  'api/user/destroy', {id :[id] }).then(function (response) {
     this.$router.push({name: 'users', query: {alert: 'User deleted'}})
     });
     }

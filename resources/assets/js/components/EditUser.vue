@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Edit User</h1>
-        <form @submit.prevent="updateForm" enctype="multipart/form-data">
+        <form @submit.prevent="updateForm"  method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <input class="form-control title" type="text" name="name" placeholder="Title" v-model="user.name">
             </div>
@@ -38,17 +38,21 @@ img {
 
     export default{
         data(){
+
             return{
                 image:'',
-                user:{}
+                user:{},
+                baseUrl: '/',
             }
         },
         methods: {
         fetchTask: function(id)
         {
-        this.$http.get('api/users/'+ id).then(function (response) {
-        this.user = response.data
-        });
+            this.$http.get(this.baseUrl + 'api/users/'+ id).then(response => {
+                this.user =  response.data.users;
+            }, (response) => {
+                console.log(response)
+            });
         },
         onFileChange(e) {
         var files = e.target.files || e.dataTransfer.files;
@@ -71,11 +75,9 @@ img {
         updateForm :function(){
         var form = document.querySelector('form');
         var formdata = new FormData(form);
-        this.$http.post('api/users/' + this.$route.params.id + '/edit', formdata).then((response) => {
-        this.$router.push({path: '/', query: {alert: response.body.message}})
-
+        this.$http.post(this.baseUrl + 'api/users/' + this.$route.params.id + '/edit', formdata).then((response) => {
+        this.$router.push({path: '/', query: {alert: '' }})
         }, (response) => {
-        console.log('error callback')
         });
         }
         },

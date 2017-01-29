@@ -66,7 +66,7 @@
         this.$http.post('api/users', formdata).then((response) => {
             this.$router.push({path: '/', query: {alert: response.body.message}})
         }, (response) => {
-        // error callback
+                // error callback
         });
         }
         }
