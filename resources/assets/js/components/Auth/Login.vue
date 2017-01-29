@@ -16,7 +16,7 @@
                         <div :class="{ 'has-error': errors.has('password'), 'form-group': true } ">
                             <label for="password" class="col-md-4 control-label">Password</label>
                             <div class="col-md-6">
-                                <input v-validate data-vv-rules="required" v-model="form.password"  type="password" class="form-control" name="password"  required autofocus>
+                                <input v-validate  data-vv-name="password" data-vv-rules="required" v-model="form.password"  type="password" class="form-control" name="password"  required autofocus>
                                 <span v-if="errors.has('password')" class="help-block">
                                     <strong>{{ errors.first('password') }}</strong>
                                     </span>
@@ -33,9 +33,14 @@
                             </div>
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">
-                                <button  type="submit" class="btn btn-primary">
-                                    Login
-                                    </button>
+                                <button-spinner
+                                    type="submit"
+                                    class="btn btn-primary"
+                                    :isLoading="isSubmitted && !isSent"
+                                    :disabled="isSent"
+                                    :status="status">
+                                    <span>Submit</span>
+                                </button-spinner>
                                 <a class="btn btn-link" href="">
                                     Forgot Your Password?
                                     </a>
@@ -51,22 +56,26 @@
 
 </style>
 <script>
-
+    import ButtonSpinner from 'vue-button-spinner';
     export default{
         data(){
             return{
-                 form:{
+                form:{
                      email: '',
                      password: '',
                      remember: false
-                 }
+                 },
+                isSubmitted: false,
+                isSent: false,
+                isValid: null,
+                status: ''
             }
         },
         methods: {
             login(){
                 var data = {
                 client_id:2,
-                client_secret: 'G328NHVNTZsySAAyGdPbYSuuzt21uWNvsTfa2ldM',
+                client_secret: 'wkKuGKRDOPPQdPRFp7PEixHAdLiK6XV97KbzO6Lh',
                 grant_type: 'password',
                 username: this.form.email,
                 password:this.form.password
@@ -76,10 +85,18 @@
                 .then(response => {
                     this.$auth.setToken(response.body.access_token, response.body.expires_in + Date.now())
                     this.$router.push({name:'users'})
+                    this.isSent = true;
+                    this.status = 'success';
                 }, (response) => {
                     console.log(response)
+                    this.isSent = false;
+                    this.status = 'error';
                 });
+                this.isSubmitted = true;
             }
+        },
+        components:{
+            'button-spinner': ButtonSpinner
         }
     }
 </script>

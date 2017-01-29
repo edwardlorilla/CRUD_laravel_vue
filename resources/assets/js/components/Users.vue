@@ -136,7 +136,7 @@
             }
         },
         components:{
-            Alert
+            Alert,
         }
     }
 
