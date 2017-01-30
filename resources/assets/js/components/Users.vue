@@ -1,10 +1,23 @@
 <template>
     <div>
+        {{pluckRole}}
        <form v-if="users.length > 0" id="search">
            <input class="input form-control" placeholder="Search" name="query" v-model="filterKey">
        </form>
         <Alert v-if="alert" v-bind:message="alert" />
         <button v-if="users.length > 0" class="btn btn-danger" @click="destroySubmit">Destroy</button>
+        <button class="btn btn-primary" @click="filterRole">Filter Role</button>
+        <!-- Single button -->
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Action <span class="caret"></span>
+            </button>
+            <ul  class="dropdown-menu">
+                <li><a @click="filterRole" >All</a></li>
+                <li v-for="role in pluckRole" ><a @click="selectedFilterRole(role)" >{{role}}</a></li>
+
+            </ul>
+        </div>
         <table v-if="users.length > 0"  class="table table-striped">
             <caption  v-if="users.length > 0" ><h1>Users({{computeUsers}})</h1></caption>
             <thead>
@@ -24,10 +37,12 @@
             </tr>
             </thead>
             <tbody>
+
+
             <tr v-for="user in filteredData">
                 <td><input type="checkbox" @click="user.completed = !user.completed" :value = "user.id" v-model = "checkedNames"></td>
                 <td>
-                    <img v-if="user.photo"   :src="user.photo ? user.photo.file : '' " />
+                    <img v-if="user.photo" width="50px" class="pull-left img-circle" :src="user.photo ? user.photo.file : '' " />
                     <avatar v-else  :username="user.name"></avatar>
                 </td>
                 <td v-for="key in grid">{{ user[key] }}</td>
@@ -62,6 +77,7 @@
                 highlightedPosition: 0,
                 keyword: '',
                 users:[],
+                roles:[],
                 alert:'',
                 checkedNames: [],
                 user:{
@@ -73,12 +89,25 @@
                     },
                     completed: function(todo) {
                         return todo.completed;
+                    },
+                    getAdministrator:function(todo){
+                        return todo.role ? todo.role.name  : '' ;
                     }
                 },
 
             }
         },
         computed: {
+            pluckRole(){
+                var users = this.users
+                var map = _.map(users, function(num, key){ return num.role?num.role.name:null });
+                var unique = _.uniq(map);
+                var pluckFilter = _.filter(unique, function(fil){ return fil == "" ? null : fil  });
+                return pluckFilter
+            },
+            userRole(){
+                return _.filter(this.users ,this.filters.getAdministrator)
+            },
             computeUsers(){
                 return  _.size(this.users)
             },
@@ -122,14 +151,22 @@
             this.fetchUsers();
         },
         methods:{
+            selectedFilterRole(role){
+               this.users = _.filter(this.users, function(select){ return select.role ? select.role.name ? select.role.name == role : select.role.name  : null } );
+
+            },
+            filterRole(){
+                this.users = _.filter(this.users, this.filters.getAdministrator );
+                this.fetchUsers();
+            },
             fetchUsers(){
                 this.$http.get('api/users').then(response => {
                     this.users = response.data.users;
                 })
             },
             destroySubmit: function () {
-                this.users = this.users.filter(this.filters.notDone);
-                this.$http.post('api/user/destroy', {id :this.checkedNames }).then((response) => {
+                    this.users = this.users.filter(this.filters.notDone);
+                    this.$http.post('api/user/destroy', {id :this.checkedNames }).then((response) => {
                 }, (response) => {
                 // error callbackp
                 });
