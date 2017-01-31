@@ -1,23 +1,14 @@
 <template>
     <div>
-        {{pluckRole}}
        <form v-if="users.length > 0" id="search">
            <input class="input form-control" placeholder="Search" name="query" v-model="filterKey">
        </form>
         <Alert v-if="alert" v-bind:message="alert" />
         <button v-if="users.length > 0" class="btn btn-danger" @click="destroySubmit">Destroy</button>
-        <button class="btn btn-primary" @click="filterRole">Filter Role</button>
-        <!-- Single button -->
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Action <span class="caret"></span>
-            </button>
-            <ul  class="dropdown-menu">
-                <li><a @click="filterRole" >All</a></li>
-                <li v-for="role in pluckRole" ><a @click="selectedFilterRole(role)" >{{role}}</a></li>
-
-            </ul>
+        <div  v-for="pluckrole in pluckRole">
+            <input type="checkbox"  :value="pluckrole" v-model = "roles" /> {{pluckrole}}
         </div>
+        {{$data.roles}}
         <table v-if="users.length > 0"  class="table table-striped">
             <caption  v-if="users.length > 0" ><h1>Users({{computeUsers}})</h1></caption>
             <thead>
@@ -39,7 +30,7 @@
             <tbody>
 
 
-            <tr v-for="user in filteredData">
+            <tr v-for="user in selectedRole">
                 <td><input type="checkbox" @click="user.completed = !user.completed" :value = "user.id" v-model = "checkedNames"></td>
                 <td>
                     <img v-if="user.photo" width="50px" class="pull-left img-circle" :src="user.photo ? user.photo.file : '' " />
@@ -77,7 +68,7 @@
                 highlightedPosition: 0,
                 keyword: '',
                 users:[],
-                roles:[],
+                roles: [],
                 alert:'',
                 checkedNames: [],
                 user:{
@@ -91,25 +82,37 @@
                         return todo.completed;
                     },
                     getAdministrator:function(todo){
-                        return todo.role ? todo.role.name  : '' ;
+                        return todo.role ? todo.role.name   : '' ;
                     }
                 },
 
             }
         },
         computed: {
+            selectedRole(){
+                var selectedRoles;
+                var roles = this.roles
+                 var selectedFilter = _.filter(this.filteredData, function(select){return select.role ? select.role.name ? roles.indexOf(select.role.name)!=-1 : select.role.name  : null } );
+                 if(_.isEmpty(roles)){
+                    selectedRoles=this.filteredData
+                 }else{
+                    selectedRoles = selectedFilter
+                 }
+
+                 return selectedRoles
+            },
             pluckRole(){
-                var users = this.users
+                var users = this.filteredData
                 var map = _.map(users, function(num, key){ return num.role?num.role.name:null });
                 var unique = _.uniq(map);
                 var pluckFilter = _.filter(unique, function(fil){ return fil == "" ? null : fil  });
                 return pluckFilter
             },
             userRole(){
-                return _.filter(this.users ,this.filters.getAdministrator)
+                return this.selectedFilterRole
             },
             computeUsers(){
-                return  _.size(this.users)
+                return  _.size(this.filteredData)
             },
             filteredData: function () {
             var sortKey = this.sortKey
@@ -151,13 +154,9 @@
             this.fetchUsers();
         },
         methods:{
-            selectedFilterRole(role){
-               this.users = _.filter(this.users, function(select){ return select.role ? select.role.name ? select.role.name == role : select.role.name  : null } );
 
-            },
             filterRole(){
-                this.users = _.filter(this.users, this.filters.getAdministrator );
-                this.fetchUsers();
+                this.users = _.filter(this.filteredData, this.filters.getAdministrator );
             },
             fetchUsers(){
                 this.$http.get('api/users').then(response => {
