@@ -6,9 +6,8 @@
         <Alert v-if="alert" v-bind:message="alert" />
         <button v-if="users.length > 0" class="btn btn-danger" @click="destroySubmit">Destroy</button>
         <div  v-for="pluckrole in pluckRole">
-            <input type="checkbox"  :value="pluckrole" v-model = "roles" /> {{pluckrole}}
+            <input type="checkbox"  :value="pluckrole" v-model = "roles"  /> {{pluckrole}}
         </div>
-        {{$data.roles}}
         <table v-if="users.length > 0"  class="table table-striped">
             <caption  v-if="users.length > 0" ><h1>Users({{computeUsers}})</h1></caption>
             <thead>
@@ -60,6 +59,7 @@
             sortOrders[key] = 1
             })
             return{
+                roles: [],
                 filterKey : '',
                 sortKey: '',
                 grid: grid,
@@ -68,7 +68,6 @@
                 highlightedPosition: 0,
                 keyword: '',
                 users:[],
-                roles: [],
                 alert:'',
                 checkedNames: [],
                 user:{
@@ -90,16 +89,15 @@
         },
         computed: {
             selectedRole(){
-                var selectedRoles;
-                var roles = this.roles
-                 var selectedFilter = _.filter(this.filteredData, function(select){return select.role ? select.role.name ? roles.indexOf(select.role.name)!=-1 : select.role.name  : null } );
-                 if(_.isEmpty(roles)){
-                    selectedRoles=this.filteredData
-                 }else{
-                    selectedRoles = selectedFilter
-                 }
-
-                 return selectedRoles
+            var selectedRoles;
+            var roles = this.roles
+            var selectedFilter = _.filter(this.filteredData, function(select){return select.role ? select.role.name ? roles.indexOf(select.role.name)!=-1 : select.role.name  : null } );
+            if(_.isEmpty(roles)){
+                selectedRoles=this.filteredData
+            }else{
+                selectedRoles = selectedFilter
+            }
+            return selectedRoles
             },
             pluckRole(){
                 var users = this.filteredData
@@ -112,7 +110,7 @@
                 return this.selectedFilterRole
             },
             computeUsers(){
-                return  _.size(this.filteredData)
+                return  _.size(this.selectedRole)
             },
             filteredData: function () {
             var sortKey = this.sortKey

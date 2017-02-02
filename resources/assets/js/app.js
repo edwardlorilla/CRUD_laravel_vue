@@ -20,6 +20,7 @@ import CreateUser from './components/CreateUser.vue';
 import EditUser from  './components/EditUser.vue';
 import ViewUser from  './components/ViewUser.vue';
 import Login from './components/Auth/Login.vue';
+import PostIndex from './components/Posts/Index.vue';
 import NotFound from './components/NotFound.vue';
 import Student from './components/StudentTest/Student.vue';
 import UserTest from './components/UserTest.vue';
@@ -44,6 +45,7 @@ const router = new VueRouter({
         {path: '/user/:id/edit', component: EditUser  },
         {path: '/user/:id', component: ViewUser  },
         {path: '/login', component: Login, name:'login', meta:{forVisitors:true}},
+        {path:'/posts', component: PostIndex , name:'posts'},
         {path: '*', redirect: '/' }
     ]
 });
