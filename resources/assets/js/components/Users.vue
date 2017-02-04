@@ -28,7 +28,6 @@
             </thead>
             <tbody>
 
-
             <tr v-for="user in selectedRole">
                 <td><input type="checkbox" @click="user.completed = !user.completed" :value = "user.id" v-model = "checkedNames"></td>
                 <td>
@@ -41,6 +40,7 @@
                 <td><router-link class="btn btn-info" v-bind:to="'/user/' + user.id + '/edit'" >Edit</router-link></td>
 
             </tr>
+
             </tbody>
         </table>
 

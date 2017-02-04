@@ -23,12 +23,15 @@ import Login from './components/Auth/Login.vue';
 import PostIndex from './components/Posts/Index.vue';
 import NotFound from './components/NotFound.vue';
 import Student from './components/StudentTest/Student.vue';
-import UserTest from './components/UserTest.vue';
+import ViewPost from './components/Posts/ViewPost.vue';
+import PostProfile from './components/Posts/PostProfile.vue';
+import CreatePost from './components/Posts/CreatePost.vue';
 import VeeValidate from 'vee-validate';
 import Auth from './components/packages/auth/Auth.js'
 Vue.use(VueRouter);
 Vue.use(VeeValidate);
 Vue.use(Auth);
+Vue.http.options.root = 'http://localhost:8000'
 Vue.http.headers.common['X-CSRF-TOKEN'] = Laravel.csrfToken;
 Vue.http.headers.common['Authorization'] = 'Bearer ' + Vue.auth.getToken()
 
@@ -45,7 +48,25 @@ const router = new VueRouter({
         {path: '/user/:id/edit', component: EditUser  },
         {path: '/user/:id', component: ViewUser  },
         {path: '/login', component: Login, name:'login', meta:{forVisitors:true}},
-        {path:'/posts', component: PostIndex , name:'posts'},
+        {path:'/post/create', component: CreatePost, name:'createPost'},
+        {path:'/posts', component: PostIndex ,
+            children: [
+                {
+                    path: 'create',
+                    component: CreatePost,
+                }
+            ]
+        }
+        ,
+        { path: '/post/:id', component: ViewPost,
+        children: [
+            {
+                // PostProfile will be rendered inside User's <router-view>
+                // when /user/:id/profile is matched
+                path: 'profile',
+                component: PostProfile
+            }
+        ]},
         {path: '*', redirect: '/' }
     ]
 });

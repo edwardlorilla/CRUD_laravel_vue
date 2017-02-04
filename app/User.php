@@ -39,7 +39,7 @@ class User extends Authenticatable
     }
     public function posts()
     {
-        return $this->hasMany('App\Role');
+        return $this->hasMany(Post::class);
     }
 
 }
