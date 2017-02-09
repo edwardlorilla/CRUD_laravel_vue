@@ -50,13 +50,10 @@ const router = new VueRouter({
         {path: '/user/:id', component: ViewUser  },
         {path: '/login', component: Login, name:'login', meta:{forVisitors:true}},
         {path:'/post/create', component: CreatePost, name:'createPost'},
-        {path:'/posts', component: PostIndex ,
-        }
-        ,
-        { path: '/post/:id', component: ViewPost,
-        },
-        { path: '/post/:id/edit', component: EditPost,
-        }
+        {path:'/posts', component: PostIndex },
+        { path: '/post/:id/edit', component: EditPost},
+
+        { path: '/post/:id', component: ViewPost,},
 
 
     ]

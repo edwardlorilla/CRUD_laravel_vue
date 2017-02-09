@@ -75,7 +75,7 @@ img {
         updateForm :function(){
         var form = document.querySelector('form');
         var formdata = new FormData(form);
-        this.$http.post(this.baseUrl + 'api/users/' + this.$route.params.id + '/edits', formdata).then((response) => {
+        this.$http.post(this.baseUrl + 'api/users/' + this.$route.params.id + '/edit', formdata).then((response) => {
         this.$router.push({path: '/', query: {alert: '' }})
         }, (response) => {
         });
