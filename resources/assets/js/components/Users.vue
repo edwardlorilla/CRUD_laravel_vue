@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="users.length > 0">
        <form v-if="users.length > 0" id="search">
            <input class="input form-control" placeholder="Search" name="query" v-model="filterKey">
        </form>
@@ -149,7 +149,13 @@
             if(this.$route.query.alert){
                 this.alert = this.$route.query.alert;
             }
-            this.fetchUsers();
+            if(_.isEmpty(this.users)){
+                this.fetchUsers()
+            }
+
+        },
+        mounted() {
+
         },
         methods:{
 
@@ -157,6 +163,7 @@
                 this.users = _.filter(this.filteredData, this.filters.getAdministrator );
             },
             fetchUsers(){
+
                 this.$http.get('api/users').then(response => {
                     this.users = response.data.users;
                 })

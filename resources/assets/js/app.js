@@ -24,8 +24,9 @@ import PostIndex from './components/Posts/Index.vue';
 import NotFound from './components/NotFound.vue';
 import Student from './components/StudentTest/Student.vue';
 import ViewPost from './components/Posts/ViewPost.vue';
-import PostProfile from './components/Posts/PostProfile.vue';
 import CreatePost from './components/Posts/CreatePost.vue';
+import EditPost from './components/Posts/EditPost.vue';
+
 import VeeValidate from 'vee-validate';
 import Auth from './components/packages/auth/Auth.js'
 Vue.use(VueRouter);
@@ -50,24 +51,14 @@ const router = new VueRouter({
         {path: '/login', component: Login, name:'login', meta:{forVisitors:true}},
         {path:'/post/create', component: CreatePost, name:'createPost'},
         {path:'/posts', component: PostIndex ,
-            children: [
-                {
-                    path: 'create',
-                    component: CreatePost,
-                }
-            ]
         }
         ,
         { path: '/post/:id', component: ViewPost,
-        children: [
-            {
-                // PostProfile will be rendered inside User's <router-view>
-                // when /user/:id/profile is matched
-                path: 'profile',
-                component: PostProfile
-            }
-        ]},
-        {path: '*', redirect: '/' }
+        },
+        { path: '/post/:id/edit', component: EditPost,
+        }
+
+
     ]
 });
 

@@ -84,7 +84,7 @@
                 this.$http.post('/oauth/token', data)
                 .then(response => {
                     this.$auth.setToken(response.body.access_token, response.body.expires_in + Date.now())
-                    this.$router.push('/')
+                    this.$router.go('/posts')
                     this.isSent = true;
                     this.status = 'success';
                 }, (response) => {

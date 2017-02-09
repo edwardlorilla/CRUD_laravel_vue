@@ -98,7 +98,7 @@ class UsersController extends Controller
     public function edits(Request $request, $id)
     {
 
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($id)->first();
 
         if (trim($request->password) == '') {
             $input = $request->except('password');

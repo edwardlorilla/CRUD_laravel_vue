@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('users', 'UsersController');
     Route::resource('posts', 'PostsController');
+    Route::post('posts/{post}/edits', 'PostsController@edits')->name('post.edits');
     Route::post('users/{user}/edit', 'UsersController@edits')->name('user.edits');
     Route::post('user/destroy/{id?}', 'UsersController@destroy')->name('user.destroy');
 });
