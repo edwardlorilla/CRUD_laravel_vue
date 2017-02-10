@@ -9,7 +9,7 @@ window._ = require('lodash');
 
 window.$ = window.jQuery = require('jquery');
 require('bootstrap-sass');
-
+require('noty')
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
  * using reactive data binding and reusable components. Vue's API is clean
@@ -31,6 +31,20 @@ Vue.http.interceptors.push((request, next) => {
     next();
 });
 
+
+window.Event = new class {
+    constructor(){
+        this.vue = new Vue();
+    }
+
+    fire(event, data=null){
+        this.vue.$emit(event, data);
+    }
+
+    listen(event, callback){
+        this.vue.$on(event, callback);
+    }
+}
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

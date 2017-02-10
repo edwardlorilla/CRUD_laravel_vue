@@ -31,11 +31,11 @@
     }
 </style>
 <script>
-
     export default{
         data(){
             return{
                 image:'',
+                alert:'',
                 post:{
                 title:'',
                 body:'',
@@ -77,7 +77,9 @@
         },
         updateForm :function(){
         this.$http.put(this.baseUrl + 'api/posts/' + this.$route.params.id, this.post).then((response) => {
-            console.log(10)
+            this.$router.push({path: this.baseUrl+ 'posts'})
+
+            noty({type:'success', layout:'topRight', text:response.data.message})
         }, (response) => {
         });
         }
