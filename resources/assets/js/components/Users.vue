@@ -154,9 +154,6 @@
             }
 
         },
-        mounted() {
-
-        },
         methods:{
 
             filterRole(){

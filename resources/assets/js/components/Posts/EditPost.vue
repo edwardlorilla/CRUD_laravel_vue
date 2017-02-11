@@ -78,7 +78,6 @@
         updateForm :function(){
         this.$http.put(this.baseUrl + 'api/posts/' + this.$route.params.id, this.post).then((response) => {
             this.$router.push({path: this.baseUrl+ 'posts'})
-
             noty({type:'success', layout:'topRight', text:response.data.message})
         }, (response) => {
         });

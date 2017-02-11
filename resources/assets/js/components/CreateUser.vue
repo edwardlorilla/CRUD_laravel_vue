@@ -65,7 +65,7 @@
         var form = document.querySelector('form');
         var formdata = new FormData(form);
         this.$http.post( 'api/users', formdata).then((response) => {
-            this.$router.push({path: '/', query: {alert: response.body.message}})
+            this.$router.push({path: '/'})
         }, (response) => {
                 // error callback
         });

@@ -21,6 +21,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('posts/{post}/edits', 'PostsController@edits')->name('post.edits');
     Route::post('users/{user}/edit', 'UsersController@edits')->name('user.edits');
     Route::post('user/destroy/{id?}', 'UsersController@destroy')->name('user.destroy');
+    Route::post('posts/destroy/{id?}', 'PostsController@destroys')->name('post.destroys');
+
 });
 
 Route::get('/user', function (Request $request) {

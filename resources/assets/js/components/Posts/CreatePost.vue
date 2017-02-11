@@ -3,10 +3,10 @@
         <h1>Create Post</h1>
         <form @submit.prevent="submitPost" method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <input class="form-control title" type="text" name="title" placeholder="Title">
+                <input class="form-control title" type="text" name="title" placeholder="Title" v-model="post.title">
             </div>
             <div class="form-group">
-                <input class="form-control title" type="text" name="body" placeholder="Description">
+                <input class="form-control title" type="text" name="body" placeholder="Description" v-model="post.body">
             </div>
 
             <div class="form-group">
@@ -32,6 +32,11 @@
             return{
                 baseURL: '/',
                 image:'',
+                post:{
+                    title:'',
+                    body:'',
+                    img:''
+                }
             }
         },
         methods: {
@@ -47,17 +52,18 @@
                 var vm = this;
                 reader.onload = (e) => {
                 vm.image = e.target.result;
+                this.post.img = e.target.result;
             };
                 reader.readAsDataURL(file);
             },
             removeImage: function (e) {
                 this.image = '';
+                this.post.img = '';
             },
             submitPost(){
-                var form = document.querySelector('form');
-                var formdata = new FormData(form);
-                this.$http.post( this.baseURL + 'api/posts', formdata).then((response) => {
-                this.$router.push({path: '/posts', query: {alert: response.body.message}})
+
+                this.$http.post( this.baseURL + 'api/posts', this.post).then((response) => {
+                this.$router.push({path: '/posts'})
             }, (response) => {
             // error callback
             });
