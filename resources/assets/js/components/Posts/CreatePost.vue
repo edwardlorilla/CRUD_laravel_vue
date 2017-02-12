@@ -53,6 +53,7 @@
                 reader.onload = (e) => {
                 vm.image = e.target.result;
                 this.post.img = e.target.result;
+
             };
                 reader.readAsDataURL(file);
             },
@@ -61,8 +62,7 @@
                 this.post.img = '';
             },
             submitPost(){
-
-                this.$http.post( this.baseURL + 'api/posts', this.post).then((response) => {
+            this.$http.post( this.baseURL + 'api/posts', this.post).then((response) => {
                 this.$router.push({path: '/posts'})
             }, (response) => {
             // error callback
