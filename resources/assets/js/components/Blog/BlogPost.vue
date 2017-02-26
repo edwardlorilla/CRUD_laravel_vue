@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <div v-for="blog in filteredData">
             <h2>
                 <a href="#">{{blog.title}}</a>
@@ -35,12 +36,14 @@
             sortOrders[key] = 1
             })
             return{
+                categories: [],
                 sortKey: '',
                 sortOrders: sortOrders
 
             }
         },
         computed: {
+
         filteredData: function () {
         var sortKey = this.sortKey
         var filterKey = this.filterKey && this.filterKey.toLowerCase()

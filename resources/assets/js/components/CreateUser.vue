@@ -9,7 +9,7 @@
                 <input class="form-control title" type="text" name="email" placeholder="Email"  v-model="user.email">
             </div>
             <div class="form-group">
-                <input class="form-control title" type="password" name="password" placeholder="Password">
+                <input class="form-control title" type="password" name="password" placeholder="Password" v-model="user.password">
             </div>
             <div class="form-group">
                 <div v-if="!image">
@@ -42,6 +42,7 @@
         user:{
             name:'',
             email:'',
+            password,
             img:''
         }
         }

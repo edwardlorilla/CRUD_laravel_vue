@@ -11,6 +11,7 @@
                  <Category  v-for='category in categories' v-bind:category="category"
                             @delete-category="deleteCategory"
                             v-on:update-category="fetchCategories"
+
                  >
                  </Category>
             </tbody>

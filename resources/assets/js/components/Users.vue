@@ -1,4 +1,5 @@
 <template>
+
     <div v-if="users.length > 0">
        <form v-if="users.length > 0" id="search">
            <input class="input form-control" placeholder="Search" name="query" v-model="filterKey">

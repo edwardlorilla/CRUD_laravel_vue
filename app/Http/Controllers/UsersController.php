@@ -99,28 +99,40 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-    }
-
-    public function edits(Request $request, $id)
-    {
-
         $user = User::findOrFail($id)->first();
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$id,
+        ]);
+
 
         if (trim($request->password) == '') {
             $input = $request->except('password');
         } else {
             $input = $request->all();
         }
-        if ($file = $request->file('image')) {
-            $name = time() . $file->getClientOriginalName();
-            $file->move('images', $name);
-            $photo = Photo::create(['file' => $name]);
+        if ($file = $request->img) {
+            list($type, $imageData) = explode(';', $request->img);
+            list(, $extension) = explode('/', $type);
+            list(, $imageData) = explode(',', $imageData);
+            $fileName = uniqid() . '.' . $extension;
+            $source = fopen($request->img, 'r');
+            $destination = fopen('images/' . $fileName, 'w');
+            stream_copy_to_stream($source, $destination);
+            fclose($source);
+            fclose($destination);
+            $photo = Photo::create(['file' => $fileName]);
             $input['photo_id'] = $photo->id;
         }
         $input['password'] = bcrypt($request->password);
         $user->update($input);
         return response()->json(['success' => true, 'message' => "User updated"]);
+    }
+
+    public function edits(Request $request, $id)
+    {
+
+
     }
 
     /**
