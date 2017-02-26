@@ -8,7 +8,16 @@
             <div class="form-group">
                 <input class="form-control title" type="text" name="body" placeholder="Description" v-model="post.body">
             </div>
-
+            <multiselect
+                v-model="post.value"
+                label="name"
+                track-by="id"
+                :options="categories"
+                :multiple="true"
+                >
+                <span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
+            </multiselect>
+        <pre>{{post.value}}</pre>
             <div class="form-group">
                 <div v-if="!image">
                     <h2>Select an image</h2>
@@ -26,20 +35,32 @@
 <style>
 </style>
 <script>
-
+import Multiselect from 'vue-multiselect'
     export default{
         data(){
             return{
+                categories:[],
                 baseURL: '/',
                 image:'',
                 post:{
                     title:'',
                     body:'',
-                    img:''
+                    img:'',
+                    value:[]
                 }
             }
         },
+
+        created(){
+        this.fetchCategories();
+        },
+
         methods: {
+        fetchCategories(){
+            this.$http.get('api/categories').then(response => {
+            this.categories = response.data.categories;
+            })
+        },
         onFileChange(e) {
             var files = e.target.files || e.dataTransfer.files;
             if (!files.length)
@@ -61,14 +82,22 @@
                 this.image = '';
                 this.post.img = '';
             },
+
             submitPost(){
             this.$http.post( this.baseURL + 'api/posts', this.post).then((response) => {
+                 this.post.title = '',
+                this.post.body ='',
+                this.post.img ='',
+                this.post.value =[]
                 this.$router.push({path: '/posts'})
             }, (response) => {
             // error callback
             });
             }
-        }
+        },
+
+        components: { Multiselect },
+
 }
 
 

@@ -3,10 +3,10 @@
         <h1>Create User</h1>
         <form @submit.prevent="submitForm" method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <input class="form-control title" type="text" name="name" placeholder="Name">
+                <input class="form-control title" type="text" name="name" placeholder="Name" v-model="user.name">
             </div>
             <div class="form-group">
-                <input class="form-control title" type="text" name="email" placeholder="Email">
+                <input class="form-control title" type="text" name="email" placeholder="Email"  v-model="user.email">
             </div>
             <div class="form-group">
                 <input class="form-control title" type="password" name="password" placeholder="Password">
@@ -39,7 +39,11 @@
         data(){
         return{
         image:'',
-
+        user:{
+            name:'',
+            email:'',
+            img:''
+        }
         }
         },
         methods: {
@@ -55,16 +59,17 @@
         var vm = this;
         reader.onload = (e) => {
         vm.image = e.target.result;
+        this.user.img = e.target.result;
         };
         reader.readAsDataURL(file);
         },
         removeImage: function (e) {
         this.image = '';
+        this.user.img='';
         },
         submitForm :function(){
-        var form = document.querySelector('form');
-        var formdata = new FormData(form);
-        this.$http.post( 'api/users', formdata).then((response) => {
+
+        this.$http.post( 'api/users',this.user).then((response) => {
             this.$router.push({path: '/'})
         }, (response) => {
                 // error callback

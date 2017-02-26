@@ -1,5 +1,5 @@
 
-window._ = require('lodash');
+window._ = require('underscore');
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support

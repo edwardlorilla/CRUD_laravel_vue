@@ -26,6 +26,9 @@ import Student from './components/StudentTest/Student.vue';
 import ViewPost from './components/Posts/ViewPost.vue';
 import CreatePost from './components/Posts/CreatePost.vue';
 import EditPost from './components/Posts/EditPost.vue';
+import CategoriesIndex from './components/Categories/CategoryIndex.vue';
+import CategoriesCreate from './components/Categories/CreateCategory.vue';
+import BlogIndex from './components/Blog/IndexBlog.vue';
 
 import VeeValidate from 'vee-validate';
 import Auth from './components/packages/auth/Auth.js'
@@ -52,8 +55,10 @@ const router = new VueRouter({
         {path:'/post/create', component: CreatePost, name:'createPost'},
         {path:'/posts', component: PostIndex, name:'postsIndex'},
         { path: '/post/:id/edit', component: EditPost},
-
         { path: '/post/:id', component: ViewPost,},
+        {path: '/categories', component:CategoriesIndex, name:'categories'},
+        {path: '/category/create', component:CategoriesCreate, name:'categoryCreate'},
+        {path: '/blog', component:BlogIndex, name:'blogIndex'},
 
 
     ]

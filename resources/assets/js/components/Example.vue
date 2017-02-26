@@ -10,13 +10,16 @@
                         <li><router-link :to="{ name: 'users' }">Users</router-link></li>
                         <li><router-link :to="{ name: 'create' }">Create</router-link></li>
                         <li><router-link :to="{ path:'/posts'}">Posts</router-link></li>
+                        <li><router-link :to="{ name: 'categories' }">Categories</router-link></li>
                     </ul>
                     </div>
                 </div>
             </nav>
         <div class="container">
                <transition name="fade">
-                   <router-view></router-view>
+
+                       <router-view></router-view>
+
                </transition>
             </div>
         </div>

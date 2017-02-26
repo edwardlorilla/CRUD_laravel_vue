@@ -4,10 +4,14 @@
         <form @submit.prevent="updateForm" >
             <div class="form-group">
                 <input class="form-control title"  type="text"  name="title" placeholder="title" v-model="post.title"  >
-                </div>
+            </div>
+
             <div class="form-group">
                 <input class="form-control body" type="text" name="body" placeholder="body" v-model="post.body">
-                </div>
+            </div>
+
+            <multiselect v-model="post.categories" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="false" :hide-selected="true" placeholder="Pick some" label="name" track-by="name"></multiselect>
+
             <div class="form-group">
                 <div v-if="!image">
                     <h2>Select an image</h2>
@@ -31,28 +35,40 @@
     }
 </style>
 <script>
+    import Multiselect from 'vue-multiselect'
     export default{
         data(){
             return{
                 image:'',
                 alert:'',
                 post:{
-                title:'',
-                body:'',
-                img:''
+                    title:'',
+                    body:'',
+                    img:'',
+                    categories:[]
                 },
                 baseUrl:'/',
+                options:[]
             }
         },
         created(){
             this.fetchPost(this.$route.params.id)
+            this.fetchCategories()
         },
         methods: {
+
+        fetchCategories(){
+        this.$http.get('api/categories').then(response => {
+            this.options = response.data.categories;
+        })
+        },
+
+
         onFileChange(e) {
-        var files = e.target.files || e.dataTransfer.files;
-        if (!files.length)
-        return;
-        this.createImage(files[0]);
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+            return;
+            this.createImage(files[0]);
         },
         createImage(file) {
         var image = new Image();
@@ -82,6 +98,9 @@
         }, (response) => {
         });
         }
-        }
+        },
+        components: {
+            Multiselect
+          },
     }
 </script>
