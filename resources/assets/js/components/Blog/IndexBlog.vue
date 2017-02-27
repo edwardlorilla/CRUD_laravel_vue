@@ -42,9 +42,8 @@
                             <ul class="list-unstyled" >
                                 <li v-for="pluckCategory in pluckCategories" ><a  :value="pluckCategory" @click="categorySelected(pluckCategory)">{{pluckCategory}}</a>
                                 </li>
-                                <li><a  @click="categorySelected()">Category Name</a>
+                                <li><a  @click="categorySelected()">All</a>
                                 </li>
-
                             </ul>
                         </div>
                         <!-- /.col-lg-6 -->
@@ -75,26 +74,24 @@ import BlogPost from './BlogPost.vue';
         },
         computed:{
             selectedCategory(){
-                var selectedRoles;
-                var categories = this.categories
-                var selectedFilter = _.filter(this.blogposts, function(obj) {
-                                        return _.some(obj.categories, {name: categories});
-                                    });
-
-                if(_.isEmpty(categories)){
-                    selectedRoles=this.blogposts
-                }else{
-                    selectedRoles = selectedFilter
-                }
-                return selectedRoles
+            var selectedRoles;
+            var categories = this.categories
+            var selectedFilter = _.filter(this.blogposts, function(obj) {
+            return _.some(obj.categories, {name: categories});
+            });
+            if(_.isEmpty(categories)){
+            selectedRoles=this.blogposts
+            }else{
+            selectedRoles = selectedFilter
+            }
+            return selectedRoles
             },
-         pluckCategories(){
-
-                var blog = this.blogposts
-                var map = _.map(blog, function(num, key){ return num.categories ?_.map(num.categories, function(categoryNum, categoryKey){return categoryNum.name} ):null });
-                var unique = _.uniq(_.flatten(map));
-                var pluckFilter = _.filter(unique, function(fil){ return fil == "" ? null : fil  });
-                return pluckFilter
+            pluckCategories(){
+            var blog = this.blogposts
+            var map = _.map(blog, function(num, key){ return num.categories ?_.map(num.categories, function(categoryNum, categoryKey){return categoryNum.name} ):null });
+            var unique = _.uniq(_.flatten(map));
+            var pluckFilter = _.filter(unique, function(fil){ return fil == "" ? null : fil  });
+            return pluckFilter
             },
         },
         created(){
