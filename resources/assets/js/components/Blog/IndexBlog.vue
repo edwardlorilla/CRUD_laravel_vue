@@ -46,9 +46,6 @@
                                 </li>
                             </ul>
                         </div>
-                        <!-- /.col-lg-6 -->
-
-                        <!-- /.col-lg-6 -->
                     </div>
                     <!-- /.row -->
                 </div>
@@ -62,7 +59,7 @@
 <style>
 </style>
 <script>
-import BlogPost from './BlogPost.vue';
+import BlogPost from './BlogHome.vue';
     export default{
         data(){
             return{

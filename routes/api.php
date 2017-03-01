@@ -26,6 +26,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 });
 Route::get('blog', 'BlogController@index');
+Route::get('blog/{blog}', 'BlogController@show');
+Route::resource('comments', 'CommentController');
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');

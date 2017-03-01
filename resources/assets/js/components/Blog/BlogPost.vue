@@ -1,70 +1,98 @@
 <template>
     <div>
+        <div class="row">
 
-        <div v-for="blog in filteredData">
-            <h2>
-                <a href="#">{{blog.title}}</a>
-            </h2>
-            <p class="lead">
-                by <a href="index.php">{{blog.user ? blog.user.name : ''}}</a>
-            </p>
-            <p><span class="glyphicon glyphicon-time"></span> Posted on {{blog.created_at}}</p>
-            <hr>
-            <img class="img-responsive" :src="blog.photo ? blog.photo.file : '' " alt="">
-            <hr>
-            <p>{{blog.body}}</p>
-            <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+        <!-- Blog Post Content Column -->
+            <div class="col-md-8">
 
-            <hr>
-        </div>
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>{{blogpost.title}}</h1>
+
+                <!-- Author -->
+                <p class="lead">
+                    by <a href="#">{{blogpost.user ? blogpost.user.name : ''}}</a>
+                </p>
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on {{blogpost.created_at}}</p>
+
+                <hr>
+
+                <!-- Preview Image -->
+                <img class="img-responsive" :src="blogpost.photo ? blogpost.photo.file : '' " alt="">
+
+                <hr>
+
+                <!-- Post Content -->
+                <p class="lead">{{blogpost.body}}</p>
+
+
+                <hr>
+                <!-- Blog Comments -->
+                <comment-form @addedComment="addComment"></comment-form>
+                <posted-comments v-for="comment in blogpost.comments" :comment="comment" ></posted-comments>
+
+            </div>
+            <div class="col-md-4">
+
+                <!-- Blog Search Well -->
+                <div class="well">
+                    <h4>Blog Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                    <!-- /.input-group -->
+                </div>
+
+            </div>
+            </div>
+
     </div>
 </template>
 <style>
 
 </style>
 <script>
-
+import CommentForm from './../Comments/CommentsForm.vue';
+import PostedComments from './../Comments/Comments.vue';
     export default{
-        props: {
-            data: Array,
-            columns: Array,
-            filterKey: String
-        },
         data(){
-            var sortOrders = {}
-            this.columns.forEach(function (key) {
-            sortOrders[key] = 1
-            })
             return{
-                categories: [],
-                sortKey: '',
-                sortOrders: sortOrders
+                msg:'hello vue',
+                blogpost:'',
 
             }
         },
-        computed: {
+        created(){
+            this.fetchBlogPost(this.$route.params.id)
+        },
+        methods:{
+            fetchBlogPost(id){
+            this.$http.get('api/blog/' + id).then(response => {
+            this.blogpost = response.data.post;
+            })
+            },
+            addComment(comment){
+                this.blogpost.comments.push({id: 3,post_id:15,body:comment, user_id:2,user:{photo_id:12}})
+                this.$http.post( 'api/comments',this.comment).then((response) => {
 
-        filteredData: function () {
-        var sortKey = this.sortKey
-        var filterKey = this.filterKey && this.filterKey.toLowerCase()
-        var order = this.sortOrders[sortKey] || 1
-        var data = this.data
-        if (filterKey) {
-        data = data.filter(function (row) {
-        return Object.keys(row).some(function (key) {
-        return String(row[key]).toLowerCase().indexOf(filterKey) > -1
-        })
-        })
-        }
-        if (sortKey) {
-        data = data.slice().sort(function (a, b) {
-        a = a[sortKey]
-        b = b[sortKey]
-        return (a === b ? 0 : a > b ? 1 : -1) * order
-        })
-        }
-        return data
-        }
+                }, (response) => {
+                // error callback
+                });
+            }
+        },
+        components:{
+            CommentForm,
+            PostedComments
         }
     }
 </script>
