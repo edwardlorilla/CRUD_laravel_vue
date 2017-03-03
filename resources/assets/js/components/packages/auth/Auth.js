@@ -2,6 +2,7 @@
  * Created by Edward Lance Lorilla on 1/23/2017.
  */
 export default function (Vue) {
+    let authencatedUser = {};
     Vue.auth = {
         setToken(token, expiration){
             localStorage.setItem('token', token)
@@ -30,7 +31,12 @@ export default function (Vue) {
             } else {
                 return false;
             }
+        },
+        setAuthenticatedUser(data){authencatedUser = data},
+        getAuthenticatedUser(){
+            return authencatedUser
         }
+
     }
     Object.defineProperties(Vue.prototype, {
         $auth: {

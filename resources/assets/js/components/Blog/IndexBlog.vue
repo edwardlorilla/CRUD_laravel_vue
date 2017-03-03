@@ -70,6 +70,7 @@ import BlogPost from './BlogHome.vue';
             }
         },
         computed:{
+
             selectedCategory(){
             var selectedRoles;
             var categories = this.categories

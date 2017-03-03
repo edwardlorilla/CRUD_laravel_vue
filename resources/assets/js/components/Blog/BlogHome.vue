@@ -42,6 +42,7 @@
 
             }
         },
+
         computed: {
 
         filteredData: function () {

@@ -73,7 +73,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $users = User::findOrfail($id);
+        $users = User::with('photo')->findOrfail($id);
         return response()->json([
             'users' => $users
         ]);

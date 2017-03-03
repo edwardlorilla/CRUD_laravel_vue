@@ -1,7 +1,6 @@
 <template>
     <div>
         <div class="row">
-
         <!-- Blog Post Content Column -->
             <div class="col-md-8">
 
@@ -33,10 +32,11 @@
 
                 <hr>
                 <!-- Blog Comments -->
-                <comment-form @addedComment="addComment"></comment-form>
+                <comment-form :AuthenticatedUser="AuthenticatedUser"  @addedComment="addComment"></comment-form>
                 <posted-comments v-for="comment in blogpost.comments" :comment="comment" ></posted-comments>
 
             </div>
+
             <div class="col-md-4">
 
                 <!-- Blog Search Well -->
@@ -55,36 +55,54 @@
 
             </div>
             </div>
-
     </div>
 </template>
 <style>
 
 </style>
 <script>
-import CommentForm from './../Comments/CommentsForm.vue';
-import PostedComments from './../Comments/Comments.vue';
+    import CommentForm from './../Comments/CommentsForm.vue';
+    import PostedComments from './../Comments/Comments.vue';
     export default{
         data(){
             return{
                 msg:'hello vue',
                 blogpost:'',
-
+                user:{},
             }
         },
         created(){
             this.fetchBlogPost(this.$route.params.id)
         },
+
+        computed:{
+            AuthenticatedUser(){
+                return this.$auth.getAuthenticatedUser()
+            }
+        },
         methods:{
+            fetchUser(){
+            console.log('created')
+            let id = this.AuthenticatedUser.id
+            if(id){
+                this.$http.get('api/users/'+ id).then(response => {
+                    this.user =  response.data.users;
+                    }, (response) => {
+                    console.log(response)
+                    });
+            }
+
+            },
             fetchBlogPost(id){
-            this.$http.get('api/blog/' + id).then(response => {
-            this.blogpost = response.data.post;
+                this.$http.get('api/blog/' + id).then(response => {
+                this.blogpost = response.data.post;
             })
             },
             addComment(comment){
-                this.blogpost.comments.push({id: 3,post_id:15,body:comment, user_id:2,user:{photo_id:12}})
-                this.$http.post( 'api/comments',this.comment).then((response) => {
-
+            let posted_comments = {id: 3,post_id:this.$route.params.id,body:comment, user_id:this.user.id,user:{photo: {file: this.user.photo ? this.user.photo.file : ''  }}}
+                this.blogpost.comments.push(posted_comments)
+                this.$http.post( 'api/comments', posted_comments).then((response) => {
+                    console.log(response)
                 }, (response) => {
                 // error callback
                 });
