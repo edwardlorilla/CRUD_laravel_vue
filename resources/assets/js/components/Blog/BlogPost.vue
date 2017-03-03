@@ -67,12 +67,22 @@
         data(){
             return{
                 msg:'hello vue',
-                blogpost:'',
+                blogpost:{
+
+
+                },
                 user:{},
+                authUserId:null,
+                filters: {
+                    notDone: function(todo) {
+                        return ! todo.completed;
+                    }
+                }
             }
         },
         created(){
             this.fetchBlogPost(this.$route.params.id)
+            this.fetchUser();
         },
 
         computed:{
@@ -82,15 +92,30 @@
         },
         methods:{
             fetchUser(){
-            console.log('created')
-            let id = this.AuthenticatedUser.id
-            if(id){
+                let id = this.AuthenticatedUser.id
+                if(_.isEmpty(id)){
+                console.log(0)
+                    this.fetchAuthUserId()
+                }
+                else{
+                console.log(1)
+                    this.AuthenticatedUsers(id)
+                }
+            },
+            AuthenticatedUsers(id){
+            console.log(id )
                 this.$http.get('api/users/'+ id).then(response => {
-                    this.user =  response.data.users;
+                        return this.user =  response.data.users;
                     }, (response) => {
                     console.log(response)
                     });
-            }
+            },
+            fetchAuthUserId(){
+            console.log(3)
+                this.$http.get('api/user').then(response => {
+                    this.$auth.setAuthenticatedUser(response.body)
+                    this.authUserId = this.$auth.getAuthenticatedUser().id
+                })
 
             },
             fetchBlogPost(id){
@@ -99,10 +124,15 @@
             })
             },
             addComment(comment){
-            let posted_comments = {id: 3,post_id:this.$route.params.id,body:comment, user_id:this.user.id,user:{photo: {file: this.user.photo ? this.user.photo.file : ''  }}}
+            if (this.authUserId){
+                    console.log(5)
+                    this.AuthenticatedUsers(this.authUserId)
+                }
+            let posted_comments = {id: 3,post_id:this.$route.params.id,body:comment, user_id:this.authUserId,user:{photo: {file: this.user.photo ? this.user.photo.file : ''  }}}
                 this.blogpost.comments.push(posted_comments)
                 this.$http.post( 'api/comments', posted_comments).then((response) => {
-                    console.log(response)
+                    this.blogpost.comments.pop()
+                     this.blogpost.comments.push(response.body.comments)
                 }, (response) => {
                 // error callback
                 });

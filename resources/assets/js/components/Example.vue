@@ -39,7 +39,6 @@
         data(){
             return{
                 isAuth:null,
-                authUser:{}
             }
         },
         created(){
@@ -52,7 +51,6 @@
                 this.$http.get('api/user').then(response => {
                     this.$auth.setAuthenticatedUser(response.body)
                     console.log(this.$auth.getAuthenticatedUser())
-                    this.authUser = this.$auth.getAuthenticatedUser()
                 })
             }
         }
