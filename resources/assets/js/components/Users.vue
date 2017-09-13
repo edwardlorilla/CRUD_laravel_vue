@@ -90,15 +90,15 @@
         },
         computed: {
             selectedRole(){
-            var selectedRoles;
-            var roles = this.roles
-            var selectedFilter = _.filter(this.filteredData, function(select){return select.role ? select.role.name ? roles.indexOf(select.role.name)!=-1 : select.role.name  : null } );
-            if(_.isEmpty(roles)){
-                selectedRoles=this.filteredData
-            }else{
-                selectedRoles = selectedFilter
-            }
-            return selectedRoles
+                var selectedRoles;
+                var roles = this.roles
+                var selectedFilter = _.filter(this.filteredData, function(select){return select.role ? select.role.name ? roles.indexOf(select.role.name)!=-1 : select.role.name  : null } );
+                if(_.isEmpty(roles)){
+                    selectedRoles=this.filteredData
+                }else{
+                    selectedRoles = selectedFilter
+                }
+                return selectedRoles
             },
             pluckRole(){
                 var users = this.filteredData

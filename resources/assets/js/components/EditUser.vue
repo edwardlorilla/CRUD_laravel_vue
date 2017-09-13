@@ -50,11 +50,11 @@ img {
         methods: {
         fetchTask: function(id)
         {
-            this.$http.get(this.baseUrl + 'api/users/'+ id).then(response => {
-                this.user =  response.data.users;
-            }, (response) => {
-                console.log(response)
-            });
+                this.$http.get(this.baseUrl + 'api/users/'+ id).then(response => {
+                    this.user =  response.data.users;
+                }, (response) => {
+                    console.log(response)
+                });
         },
         onFileChange(e) {
         var files = e.target.files || e.dataTransfer.files;

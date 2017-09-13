@@ -73,7 +73,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $users = User::with('photo')->findOrfail($id);
+        $users = User::with('photo')->whereId($id)->first();
         return response()->json([
             'users' => $users
         ]);
@@ -99,11 +99,12 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id)->first();
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-        ]);
+
+        $user = User::whereId($id)->first();
+
+            $this->validate($request, [
+                'email' => 'required|email|unique:users,email,' . $user->id
+            ]);
 
 
         if (trim($request->password) == '') {

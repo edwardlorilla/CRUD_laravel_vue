@@ -26,3 +26,13 @@
         <script src="{{ URL::asset('js/app.js') }}"></script>
     </body>
 </html>
+
+
+<div class="main-wrapper">
+    <div class="header"><h1>Vue Shopping Cart</h1></div>
+    <div id="vue">
+        <cart :cart="cart" :cart-sub-total="cartSubTotal" :tax="tax" :cart-total="cartTotal" :checkout-bool="checkoutBool"></cart>
+        <products :cart="cart" :cart-sub-total="cartSubTotal" :tax="tax" :cart-total="cartTotal" :products-data="productsData"></products>
+        <checkout-area v-if="checkoutBool" :cart="cart" :tax="tax" :cart-sub-total="cartSubTotal" :cart-total="cartTotal" :products-data="productsData" :total-with-tax="totalWithTax"></checkout-area>
+    </div>
+</div>

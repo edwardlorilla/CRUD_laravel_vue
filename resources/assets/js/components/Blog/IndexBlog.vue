@@ -103,6 +103,7 @@ import BlogPost from './BlogHome.vue';
                 })
             },
             categorySelected(pluckCategory  ){
+                this.searchQuery = ''
                 if(pluckCategory){
                     this.categories = pluckCategory
                 }else{

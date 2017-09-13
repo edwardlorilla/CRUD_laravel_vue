@@ -42,7 +42,7 @@
         user:{
             name:'',
             email:'',
-            password,
+            password:'',
             img:''
         }
         }

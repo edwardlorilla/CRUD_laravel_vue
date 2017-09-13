@@ -28,7 +28,7 @@
         props: {
             data: Array,
             columns: Array,
-            filterKey: String
+            filterKey: String,
         },
         data(){
             var sortOrders = {}
@@ -46,6 +46,7 @@
         computed: {
 
         filteredData: function () {
+
         var sortKey = this.sortKey
         var filterKey = this.filterKey && this.filterKey.toLowerCase()
         var order = this.sortOrders[sortKey] || 1

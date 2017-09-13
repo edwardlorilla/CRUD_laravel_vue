@@ -7,6 +7,7 @@
                     <router-link v-bind:to="'/'" class="navbar-brand">Laravel Vue</router-link>
                     </div>
                 <div id="navbar" class="navbar-collapse collapse">
+                <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><router-link v-if="isAuth" :to="{ name: 'users' }">Users</router-link></li>
                         <li><router-link v-if="isAuth" :to="{ name: 'create' }">Create</router-link></li>
@@ -20,7 +21,7 @@
         <div class="container">
                <transition name="fade">
 
-                       <router-view></router-view>
+                       <router-view :key="$route.fullPath" ></router-view>
 
                </transition>
             </div>
